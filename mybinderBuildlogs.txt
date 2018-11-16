@@ -1,0 +1,173 @@
+Waiting for build to start...
+Picked Git content provider.
+Cloning into '/tmp/repo2dockernbhk8f0j'...
+HEAD is now at 0492f55 Remove unused seaborn import.
+Building conda environment for python=3.6Using CondaBuildPack builder
+Building conda environment for python=3.6Building conda environment for python=3.6Step 1/32 : FROM buildpack-deps:bionic
+ ---> 95dff98a2234
+Step 2/32 : ENV DEBIAN_FRONTEND=noninteractive
+ ---> Using cache
+ ---> 7dbfa061dcc9
+Step 3/32 : RUN apt-get update &&     apt-get install --yes --no-install-recommends locales &&     apt-get purge &&     apt-get clean &&     rm -rf /var/lib/apt/lists/*
+ ---> Using cache
+ ---> 72d368d962ea
+Step 4/32 : RUN echo "en_US.UTF-8 UTF-8" > /etc/locale.gen &&     locale-gen
+ ---> Using cache
+ ---> 3baf726491c7
+Step 5/32 : ENV LC_ALL en_US.UTF-8
+ ---> Using cache
+ ---> 3692be839f2f
+Step 6/32 : ENV LANG en_US.UTF-8
+ ---> Using cache
+ ---> 6f06ff0bc154
+Step 7/32 : ENV LANGUAGE en_US.UTF-8
+ ---> Using cache
+ ---> 64ec458eb447
+Step 8/32 : ENV SHELL /bin/bash
+ ---> Using cache
+ ---> c2207caf6c38
+Step 9/32 : ARG NB_USER
+ ---> Using cache
+ ---> 32f51f72426d
+Step 10/32 : ARG NB_UID
+ ---> Using cache
+ ---> 3b1c3e0b6d5b
+Step 11/32 : ENV USER ${NB_USER}
+ ---> Using cache
+ ---> 5047dc101b42
+Step 12/32 : ENV HOME /home/${NB_USER}
+ ---> Using cache
+ ---> 9cf5c40906cc
+Step 13/32 : RUN adduser --disabled-password     --gecos "Default user"     --uid ${NB_UID}     ${NB_USER}
+ ---> Using cache
+ ---> 17552a0c7cbe
+Step 14/32 : WORKDIR ${HOME}
+ ---> Using cache
+ ---> 086f9d95a443
+Step 15/32 : RUN wget --quiet -O - https://deb.nodesource.com/gpgkey/nodesource.gpg.key |  apt-key add - &&     DISTRO="bionic" &&     echo "deb https://deb.nodesource.com/node_10.x $DISTRO main" >> /etc/apt/sources.list.d/nodesource.list &&     echo "deb-src https://deb.nodesource.com/node_10.x $DISTRO main" >> /etc/apt/sources.list.d/nodesource.list
+ ---> Using cache
+ ---> 273fe4fe6c40
+Step 16/32 : RUN apt-get update &&     apt-get install --yes --no-install-recommends        less        nodejs        unzip        && apt-get purge &&     apt-get clean &&     rm -rf /var/lib/apt/lists/*
+ ---> Using cache
+ ---> d310d86d3745
+Step 17/32 : EXPOSE 8888
+ ---> Using cache
+ ---> 543112380099
+Step 18/32 : ENV APP_BASE /srv
+ ---> Using cache
+ ---> f586d51593a7
+Step 19/32 : ENV CONDA_DIR ${APP_BASE}/conda
+ ---> Using cache
+ ---> e8daecd69994
+Step 20/32 : ENV NB_PYTHON_PREFIX ${CONDA_DIR}
+ ---> Using cache
+ ---> a8c495555d9b
+Step 21/32 : ENV KERNEL_PYTHON_PREFIX ${NB_PYTHON_PREFIX}
+ ---> Using cache
+ ---> 2c7ee4aff49b
+Step 22/32 : ENV PATH ${CONDA_DIR}/bin:$HOME/.local/bin:${PATH}
+ ---> Using cache
+ ---> 4318385dd25d
+Step 23/32 : COPY conda/install-miniconda.bash /tmp/install-miniconda.bash
+ ---> Using cache
+ ---> 4e7531dd4ae5
+Step 24/32 : COPY conda/environment.py-3.6.frozen.yml /tmp/environment.yml
+ ---> Using cache
+ ---> b2802ff9481b
+Step 25/32 : RUN bash /tmp/install-miniconda.bash && rm /tmp/install-miniconda.bash /tmp/environment.yml
+ ---> Using cache
+ ---> b1876c8b8e3f
+Step 26/32 : USER root
+ ---> Using cache
+ ---> 2bc12c2dc62a
+Step 27/32 : COPY src/ ${HOME}
+ ---> cb476c2a2405
+Step 28/32 : RUN chown -R ${NB_USER}:${NB_USER} ${HOME}
+ ---> Running in 4bebbdf79503
+Removing intermediate container 4bebbdf79503
+ ---> 4527fb176de2
+Step 29/32 : USER ${NB_USER}
+ ---> Running in c0bcae93a373
+Removing intermediate container c0bcae93a373
+ ---> ebb85e96a6bd
+Step 30/32 : RUN conda env update -n root -f "environment.yml" && conda clean -tipsy && conda list -n root
+ ---> Running in b259493eb738
+Solving environment: ...working... done
+libsodium-1.0.16     | 1.5 MB    | ########## | 100%
+pcre-8.42            | 251 KB    | ########## | 100%
+wcwidth-0.1.7        | 23 KB     | ########## | 100%
+python-dateutil-2.7. | 203 KB    | ########## | 100%
+bleach-2.1.3         | 24 KB     | ########## | 100%
+pip-9.0.3            | 1.7 MB    | ########## | 100%
+ca-certificates-2018 | 124 KB    | ########## | 100%
+numpy-1.14.3         | 9.0 MB    | ########## | 100%
+jedi-0.12.0          | 224 KB    | ########## | 100%
+fortran-magic-0.7    | 12 KB     | ########## | 100%
+zeromq-4.2.5         | 952 KB    | ########## | 100%
+expat-2.2.5          | 186 KB    | ########## | 100%
+jsonschema-2.6.0     | 64 KB     | ########## | 100%
+pygments-2.2.0       | 1.3 MB    | ########## | 100%
+cycler-0.10.0        | 13 KB     | ########## | 100%
+pyqt-5.9.2           | 5.9 MB    | ########## | 100%
+libffi-3.2.1         | 43 KB     | ########## | 100%
+gmp-6.1.2            | 670 KB    | ########## | 100%
+qt-5.9.5             | 84.9 MB   | ########## | 100%
+tk-8.6.7             | 3.1 MB    | ########## | 100%
+ipython-6.3.1        | 1.0 MB    | ########## | 100%
+ipykernel-4.8.2      | 148 KB    | ########## | 100%
+readline-7.0         | 1.1 MB    | ########## | 100%
+webencodings-0.5     | 18 KB     | ########## | 100%
+prompt_toolkit-1.0.1 | 339 KB    | ########## | 100%
+gst-plugins-base-1.1 | 6.3 MB    | ########## | 100%
+pandoc-2.2           | 21.1 MB   | ########## | 100%
+libxcb-1.13          | 502 KB    | ########## | 100%
+simplegeneric-0.8.1  | 8 KB      | ########## | 100%
+pexpect-4.5.0        | 76 KB     | ########## | 100%
+blas-1.1             | 1 KB      | ########## | 100%
+openssl-1.0.2o       | 3.4 MB    | ########## | 100%
+certifi-2018.4.16    | 142 KB    | ########## | 100%
+parso-0.2.0          | 60 KB     | ########## | 100%
+tornado-5.0.2        | 657 KB    | ########## | 100%
+python-3.6.5         | 29.4 MB   | ########## | 100%
+ncurses-6.1          | 943 KB    | ########## | 100%
+ipython_genutils-0.2 | 36 KB     | ########## | 100%
+pyzmq-17.0.0         | 1.1 MB    | ########## | 100%
+entrypoints-0.2.3    | 9 KB      | ########## | 100%
+terminado-0.8.1      | 20 KB     | ########## | 100%
+markupsafe-1.0       | 32 KB     | ########## | 100%
+openblas-0.2.20      | 17.0 MB   | ########## | 100%
+notebook-5.5.0       | 6.9 MB    | ########## | 100%
+pyparsing-2.2.0      | 96 KB     | ########## | 100%
+wheel-0.31.0         | 62 KB     | ########## | 100%
+setuptools-39.1.0    | 547 KB    | ########## | 100%
+libpng-1.6.34        | 334 KB    | ########## | 100%
+icu-58.2             | 22.5 MB   | ########## | 100%
+kiwisolver-1.0.1     | 84 KB     | ########## | 100%
+pytz-2018.4          | 215 KB    | ########## | 100%
+freetype-2.8         | 804 KB    | ########## | 100%
+xz-5.2.3             | 854 KB    | ########## | 100%
+scipy-1.1.0          | 40.2 MB   | ########## | 100%
+zlib-1.2.11          | 93 KB     | ########## | 100%
+fontconfig-2.12.6    | 283 KB    | ########## | 100%
+nbconvert-5.3.1      | 320 KB    | ########## | 100%
+testpath-0.3.1       | 90 KB     | ########## | 100%
+sqlite-3.23.1        | 1.5 MB    | ########## | 100%
+jpeg-9b              | 248 KB    | ########## | 100%
+jupyter_client-5.2.3 | 127 KB    | ########## | 100%
+nbformat-4.4.0       | 140 KB    | ########## | 100%
+pandocfilters-1.4.2  | 13 KB     | ########## | 100%
+gstreamer-1.14.0     | 3.8 MB    | ########## | 100%
+pandas-0.22.0        | 26.1 MB   | ########## | 100%
+matplotlib-2.2.2     | 6.6 MB    | ########## | 100%
+libxml2-2.9.8        | 2.0 MB    | ########## | 100%
+dbus-1.13.2          | 554 KB    | ########## | 100%
+glib-2.56.1          | 5.0 MB    | ########## | 100%
+sip-4.19.8           | 290 KB    | ########## | 100%
+mistune-0.8.3        | 873 KB    | ########## | 100%
+ptyprocess-0.5.2     | 22 KB     | ########## | 100%
+libgfortran-3.0.0    | 281 KB    | ########## | 100%
+jinja2-2.10          | 183 KB    | ########## | 100%
+Downloading and Extracting Packages
+Preparing transaction: ...working... done
+Verifying transaction: ...working... done
+Executing transaction: ...working...
